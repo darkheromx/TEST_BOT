@@ -1,0 +1,14 @@
+[Unit]
+Description=P9s Chatbot Service
+After=network.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/P9s_CHATBOT
+ExecStart=/usr/local/bin/docker-compose up --build
+ExecStop=/usr/local/bin/docker-compose down
+Restart=always
+EnvironmentFile=/home/pi/P9s_CHATBOT/.env
+
+[Install]
+WantedBy=multi-user.target

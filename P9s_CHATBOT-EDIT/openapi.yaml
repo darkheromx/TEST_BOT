@@ -1,0 +1,23 @@
+#Path : openapi.yaml
+openapi: 3.0.1
+info:
+  title: P9s_CHATBOT API
+  version: "1.0"
+paths:
+  /webhook:
+    post:
+      summary: รับข้อความจาก LINE/Facebook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: ตอบกลับสำเร็จ
+  /healthz:
+    get:
+      summary: ตรวจสถานะระบบ
+      responses:
+        '200':
+          description: OK

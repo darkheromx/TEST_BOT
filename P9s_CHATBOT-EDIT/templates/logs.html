@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Logs</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <h1>Chat Logs</h1>
+
+  <!-- Search -->
+  <form method="get" action="/admin/logs">
+    <input type="text" name="q" placeholder="Search..." value="{{ q }}">
+    <button type="submit">Filter</button>
+  </form>
+
+  <!-- Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>User</th><th>Intent</th><th>Q</th><th>A</th><th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td>{{ r.id }}</td>
+        <td>{{ r.user_id }}</td>
+        <td>{{ r.intent }}</td>
+        <td>{{ r.question }}</td>
+        <td>{{ r.answer }}</td>
+        <td>{{ r.timestamp }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  <div>
+    {% if pagination.prev_page %}
+      <a href="?page={{ pagination.prev_page }}&q={{ q }}">Prev</a>
+    {% endif %}
+    <span>Page {{ pagination.page }} / {{ pagination.total_pages }}</span>
+    {% if pagination.next_page %}
+      <a href="?page={{ pagination.next_page }}&q={{ q }}">Next</a>
+    {% endif %}
+  </div>
+</body>
+</html>

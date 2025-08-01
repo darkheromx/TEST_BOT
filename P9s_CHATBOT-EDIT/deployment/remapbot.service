@@ -1,0 +1,13 @@
+[Unit]
+Description=P9s Chatbot Service
+After=network.target
+
+[Service]
+User=6uid
+WorkingDirectory=/home/6uid/P9s_CHATBOT
+ExecStart=/usr/local/bin/gunicorn app:app --bind 127.0.0.1:8000 --workers 4
+EnvironmentFile=/home/6uid/P9s_CHATBOT/.env
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

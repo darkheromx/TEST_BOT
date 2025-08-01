@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage FAQs</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <h1>Manage FAQs</h1>
+
+  <!-- Create FAQ -->
+  <form action="/admin/faqs/create" method="post">
+    <h3>Create New FAQ</h3>
+    <label>Question:<br><input type="text" name="question" required></label><br>
+    <label>Answer:<br><textarea name="answer" rows="3" required></textarea></label><br>
+    <label>Category:<br><input type="text" name="category"></label><br>
+    <button type="submit">Add FAQ</button>
+  </form>
+
+  <!-- Rebuild Index -->
+  <form action="/admin/faqs/rebuild" method="post" style="margin-top:10px;">
+    <button type="submit">Rebuild FAISS Index</button>
+  </form>
+
+  <!-- FAQ List -->
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>Question</th><th>Answer</th><th>Category</th><th>Created At</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for faq in faqs %}
+      <tr>
+        <td>{{ faq.id }}</td>
+        <td>{{ faq.question }}</td>
+        <td>{{ faq.answer }}</td>
+        <td>{{ faq.category or '' }}</td>
+        <td>{{ faq.created_at }}</td>
+        <td>
+          <!-- Update -->
+          <form action="/admin/faqs/update" method="post" style="display:inline;">
+            <input type="hidden" name="faq_id" value="{{ faq.id }}">
+            <input type="text" name="question" value="{{ faq.question }}" required>
+            <input type="text" name="answer"  value="{{ faq.answer }}"   required>
+            <input type="text" name="category" value="{{ faq.category or '' }}">
+            <button type="submit">Update</button>
+          </form>
+          <!-- Delete -->
+          <form action="/admin/faqs/delete" method="post" style="display:inline;">
+            <input type="hidden" name="faq_id" value="{{ faq.id }}">
+            <button type="submit" onclick="return confirm('Delete this FAQ?')">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

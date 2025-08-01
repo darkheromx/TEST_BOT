@@ -1,0 +1,22 @@
+#Path : requirements.txt
+fastapi==0.110.1
+uvicorn==0.29.0
+httpx==0.27.0
+python-dotenv==1.0.1
+
+pydantic==2.6.4
+openai==1.30.1
+sentence-transformers==2.6.1
+faiss-cpu==1.7.4
+scikit-learn==1.4.2
+
+python-multipart==0.0.9
+
+# สำหรับ hash รหัสผ่าน Admin
+passlib==1.7.4
+bcrypt==4.0.1
+# ── Database & Migrations ──
+SQLAlchemy==2.0.19
+alembic==1.10.2
+
+prometheus_client==0.17.0

@@ -1,0 +1,83 @@
+<!-- templates/pending.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pending Questions</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    table { width:100%; border-collapse: collapse; margin-top:20px; }
+    th, td { border:1px solid #ccc; padding:8px; }
+    th { background:#f4f4f4; }
+    .modal { display:none; position:fixed; top:0; left:0; right:0; bottom:0;
+             background:rgba(0,0,0,0.5); align-items:center; justify-content:center; }
+    .modal-content { background:#fff; padding:20px; border-radius:6px; width:90%; max-width:500px; }
+  </style>
+  <script>
+    function showModal(id){document.getElementById('modal-'+id).style.display='flex';}
+    function closeModal(id){document.getElementById('modal-'+id).style.display='none';}
+  </script>
+</head>
+<body>
+  <h1>Pending Questions</h1>
+
+  <form method="get">
+    <input name="q" placeholder="Search..." value="{{ request.query_params.q }}">
+    <select name="platform">
+      <option value="">All</option>
+      <option value="line" {% if request.query_params.platform=='line'%}selected{%endif%}>LINE</option>
+      <option value="facebook" {% if request.query_params.platform=='facebook'%}selected{%endif%}>Facebook</option>
+    </select>
+    <button>Filter</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Platform</th><th>User</th><th>Question</th><th>Asked At</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      {% for q in rows %}
+      <tr>
+        <td>{{q.id}}</td>
+        <td>{{q.user_platform}}</td>
+        <td>{{q.user_id}}</td>
+        <td>{{q.question}}</td>
+        <td>{{q.created_at}}</td>
+        <td>
+          <button onclick="showModal('{{q.id}}')">Reply</button>
+          <div id="modal-{{q.id}}" class="modal" onclick="closeModal('{{q.id}}')">
+            <div class="modal-content" onclick="event.stopPropagation()">
+              <h3>Reply to Q#{{q.id}}</h3>
+              <form action="/admin/reply" method="post">
+                <input type="hidden" name="question_id" value="{{q.id}}">
+                <textarea name="reply_text" rows="4" style="width:100%" required></textarea>
+                <div style="margin-top:10px; text-align:right;">
+                  <button type="button" onclick="closeModal('{{q.id}}')">Cancel</button>
+                  <button type="submit">Send</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" style="text-align:center;">No pending questions.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if pagination %}
+  <div style="margin-top:20px;">
+    {% if pagination.prev_page %}
+      <a href="?page={{pagination.prev_page}}{% if request.query_params.q %}&q={{request.query_params.q}}{% endif %}{% if request.query_params.platform %}&platform={{request.query_params.platform}}{% endif %}">Prev</a>
+    {% endif %}
+    <span>Page {{pagination.page}} of {{pagination.total_pages}}</span>
+    {% if pagination.next_page %}
+      <a href="?page={{pagination.next_page}}{% if request.query_params.q %}&q={{request.query_params.q}}{% endif %}{% if request.query_params.platform %}&platform={{request.query_params.platform}}{% endif %}">Next</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</body>
+</html>

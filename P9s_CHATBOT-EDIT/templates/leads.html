@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Leads</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <h1>Lead Records</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>User</th><th>Name</th><th>Phone</th><th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td>{{ r.id }}</td>
+        <td>{{ r.user_id }}</td>
+        <td>{{ r.name }}</td>
+        <td>{{ r.phone }}</td>
+        <td>{{ r.timestamp }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  <div>
+    {% if pagination.prev_page %}
+      <a href="?page={{ pagination.prev_page }}">Prev</a>
+    {% endif %}
+    <span>Page {{ pagination.page }} / {{ pagination.total_pages }}</span>
+    {% if pagination.next_page %}
+      <a href="?page={{ pagination.next_page }}">Next</a>
+    {% endif %}
+  </div>
+</body>
+</html>
